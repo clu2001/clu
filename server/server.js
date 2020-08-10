@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 {/***********************************************************************/}
 
 // mongoose connection 
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/form', {useNewUrlParser: true, useUnifiedTopology: true });
+
+// make a schema 
+
 
 // see if mongoose connection is successful 
 const db = mongoose.connection;
@@ -16,13 +19,25 @@ db.once('open', function() {
 const typeDefs = gql`
   type Query {
     hello: String
+    raeSremmurd(songName: String): String
   }
+
+  type Music {
+      success: Boolean
+  }
+
 `;
 
 const resolvers = {
   Query: {
     hello: () => 'Hello world!',
+    raeSremmurd: (_, { songName } ) => `${ songName }`
   },
+
+  Music: {
+    success: false, 
+  }
+  
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
